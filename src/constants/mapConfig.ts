@@ -1,5 +1,5 @@
 import L from 'leaflet'
 
-export const center: L.LatLngExpression = [51.505, -0.09]
+export const center: L.LatLngExpression = [39.507, -0.365591]
 
-export const defaultZoom = 13
+export const defaultZoom = 17

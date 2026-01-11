@@ -1,46 +1,69 @@
 <template>
   <v-app :theme="theme">
-    <v-app-bar>
-      <div class="d-flex justify-space-between" style="width: 100%">
-        <div>
-          <h2 class="title ml-8">Mi Plantilla</h2>
-        </div>
-        <div class="d-flex flex-row">
-          <v-select
-            :model-value="theme"
-            density="compact"
-            label="Theme"
-            :items="avaliableThemes"
-            @update:model-value="theme = $event"
-          ></v-select>
-        </div>
-      </div>
+    <v-app-bar v-if="!isLogin" flat color="white" class="px-4">
+      <v-toolbar-title class="text-h6 font-weight-bold">
+        Gestión de Colonias Felinas
+      </v-toolbar-title>
+
+      <v-spacer />
+
+      <v-btn variant="text" class="text-capitalize" to="/dashboard">Inicio</v-btn>
+      <v-btn variant="text" class="text-capitalize" to="/colonias">Colonias</v-btn>
+      <v-btn variant="text" class="text-capitalize" to="/gatos">Gatos</v-btn>
+      <v-btn variant="text" class="text-capitalize" to="/adopciones">Adopciones</v-btn>
+      <v-btn variant="text" class="text-capitalize" to="/incidencias">Incidencias</v-btn>
+
+      <v-btn class="ml-4 text-capitalize" color="primary" variant="flat" to="/informes">
+        Informes
+      </v-btn>
     </v-app-bar>
-    <v-navigation-drawer :width="199">
-      <v-list-item title="My Application" subtitle="Vuetify"></v-list-item>
-      <v-divider></v-divider>
-      <v-list-item link title="List Item 1"></v-list-item>
-      <v-list-item link title="List Item 2"></v-list-item>
-      <v-list-item link title="List Item 3"></v-list-item>
-    </v-navigation-drawer>
-    <v-main>
-      <router-view></router-view>
-    </v-main>
+
+    <!-- FLEX layout bajo la app-bar -->
+    <div class="d-flex layout-below-bar">
+      <!-- Contenido principal -->
+      <v-main class="main-area overflow-y-auto">
+        <router-view
+          v-model:selected-feature="selectedFeature"
+          v-model:selected-item="selectedItem"
+        />
+      </v-main>
+    </div>
   </v-app>
 </template>
 
 <script setup lang="ts">
   import { useStorage } from '@vueuse/core'
   import { type Theme } from './types/config'
+  import { computed, ref } from 'vue'
+  import { useRoute } from 'vue-router'
+
+  const route = useRoute()
+
   const avaliableThemes = ['light', 'dark'] as const
   const theme = useStorage<Theme>('theme', 'light')
+
+  const selectedItem = ref('cat1')
+
+  const selectedFeature = ref<GeoJSON.Feature>()
+
+  const isLogin = computed(() => {
+    return route.name === 'login'
+  })
 </script>
 
 <style lang="scss">
-  .full-height {
-    height: calc(100vh - 72px) !important;
+  .layout-below-bar {
+    height: calc(100vh); // Ajusta si la app-bar es más alta
   }
-  .scroll-y {
-    overflow-y: auto;
+
+  .info-panel {
+    width: 200px;
+    background: #f8f8f8;
+    border-left: 1px solid #ccc;
+  }
+
+  .main-area {
+    flex: 1;
+    min-width: 0;
   }
 </style>

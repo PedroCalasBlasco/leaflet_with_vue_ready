@@ -1,6 +1,6 @@
 import L from 'leaflet'
-import { baseMaps, baseMapsThumb } from '../../constants/baseMaps'
-import { type CustomControlOptions } from '../../types/mapControl'
+import { baseMaps, baseMapsThumb } from '../../../constants/baseMaps'
+import { type CustomControlOptions } from '../../../types/mapControl'
 import './styles.css'
 
 const createElement = (tag: string, className?: string) => L.DomUtil.create(tag, className)
